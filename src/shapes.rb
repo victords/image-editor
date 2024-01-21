@@ -10,30 +10,33 @@ class Shapes
   SQRT_3_OVER_2 = Math.sqrt(3) * 0.5
 
   class << self
-    def rectangle(width, height, fill_color = DEFAULT_FILL_COLOR, outline_color = DEFAULT_OUTLINE_COLOR, outline_width = 1)
+    def rectangle(width, height, fill_color = DEFAULT_FILL_COLOR, outline_color = DEFAULT_OUTLINE_COLOR, outline_width = 2)
       image = new_image(width, height)
       drawer = new_drawer(fill_color, outline_color, outline_width)
-      drawer.rectangle(0, 0, width - 1, height - 1)
+      half_outline = outline_width * 0.5
+      right_edge = width - 1 - half_outline
+      bottom_edge = height - 1 - half_outline
+      drawer.polygon(half_outline, half_outline, right_edge, half_outline, right_edge, bottom_edge, half_outline, bottom_edge)
       drawer.draw(image)
 
       gosu_image(image, width, height)
     end
 
-    def circle(diameter, fill_color = DEFAULT_FILL_COLOR, outline_color = DEFAULT_OUTLINE_COLOR, outline_width = 1)
+    def circle(diameter, fill_color = DEFAULT_FILL_COLOR, outline_color = DEFAULT_OUTLINE_COLOR, outline_width = 2)
       image = new_image(diameter, diameter)
       draw = new_drawer(fill_color, outline_color, outline_width)
-      draw.circle((diameter - 1) / 2.0, (diameter - 1) / 2.0, outline_width / 2.0, (diameter - 1) / 2.0)
+      draw.circle((diameter - 1) * 0.5, (diameter - 1) * 0.5, outline_width * 0.5, (diameter - 1) * 0.5)
       draw.draw(image)
 
       gosu_image(image, diameter, diameter)
     end
 
-    def triangle_equi(width, fill_color = DEFAULT_FILL_COLOR, outline_color = DEFAULT_OUTLINE_COLOR, outline_width = 1)
+    def triangle_equi(width, fill_color = DEFAULT_FILL_COLOR, outline_color = DEFAULT_OUTLINE_COLOR, outline_width = 2)
       image = new_image(width, width)
       draw = new_drawer(fill_color, outline_color, outline_width)
       height = width * SQRT_3_OVER_2
-      base_y = (width - height) / 2
-      draw.polygon((width - 1) / 2.0, base_y, 0, width - base_y, width - 1, width - base_y)
+      base_y = (width - height) * 0.5
+      draw.polygon((width - 1) * 0.5, base_y, outline_width * 0.5, width - base_y, width - 1 - outline_width * 0.5, width - base_y)
       draw.draw(image)
 
       gosu_image(image, width, width)

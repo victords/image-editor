@@ -4,7 +4,7 @@ include MiniGL
 
 class Gui
   BUTTON_SIZE = 50
-  SHAPE_SIZE = 32
+  SHAPE_SIZE = 40
   SHAPE_OFFSET = (BUTTON_SIZE - SHAPE_SIZE) / 2
   SPACING = 10
 
