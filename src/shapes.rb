@@ -24,22 +24,33 @@ class Shapes
 
     def circle(diameter, fill_color = DEFAULT_FILL_COLOR, outline_color = DEFAULT_OUTLINE_COLOR, outline_width = 2)
       image = new_image(diameter, diameter)
-      draw = new_drawer(fill_color, outline_color, outline_width)
-      draw.circle((diameter - 1) * 0.5, (diameter - 1) * 0.5, outline_width * 0.5, (diameter - 1) * 0.5)
-      draw.draw(image)
+      drawer = new_drawer(fill_color, outline_color, outline_width)
+      drawer.circle((diameter - 1) * 0.5, (diameter - 1) * 0.5, outline_width * 0.5, (diameter - 1) * 0.5)
+      drawer.draw(image)
 
       gosu_image(image, diameter, diameter)
     end
 
     def triangle_equi(width, fill_color = DEFAULT_FILL_COLOR, outline_color = DEFAULT_OUTLINE_COLOR, outline_width = 2)
       image = new_image(width, width)
-      draw = new_drawer(fill_color, outline_color, outline_width)
+      drawer = new_drawer(fill_color, outline_color, outline_width)
       height = width * SQRT_3_OVER_2
       base_y = (width - height) * 0.5
-      draw.polygon((width - 1) * 0.5, base_y, outline_width * 0.5, width - base_y, width - 1 - outline_width * 0.5, width - base_y)
-      draw.draw(image)
+      drawer.polygon((width - 1) * 0.5, base_y, outline_width * 0.5, width - base_y, width - 1 - outline_width * 0.5, width - base_y)
+      drawer.draw(image)
 
       gosu_image(image, width, width)
+    end
+
+    def triangle_right(width, height, fill_color = DEFAULT_FILL_COLOR, outline_color = DEFAULT_OUTLINE_COLOR, outline_width = 2)
+      image = new_image(width, height)
+      drawer = new_drawer(fill_color, outline_color, outline_width)
+      half_outline = outline_width * 0.5
+      bottom_edge = height - 1 - half_outline
+      drawer.polygon(half_outline, half_outline, half_outline, bottom_edge, width - 1 - half_outline, bottom_edge)
+      drawer.draw(image)
+
+      gosu_image(image, width, height)
     end
 
     private

@@ -6,6 +6,7 @@ class Gui
   BUTTON_SIZE = 50
   SHAPE_SIZE = 40
   SHAPE_OFFSET = (BUTTON_SIZE - SHAPE_SIZE) / 2
+  LEFT_PANEL_COLUMNS = 3
   SPACING = 10
 
   class << self
@@ -14,12 +15,12 @@ class Gui
         Shapes.rectangle(SHAPE_SIZE, SHAPE_SIZE),
         Shapes.circle(SHAPE_SIZE),
         Shapes.triangle_equi(SHAPE_SIZE),
-        Shapes.circle(SHAPE_SIZE),
+        Shapes.triangle_right(SHAPE_SIZE, SHAPE_SIZE)
       ]
 
       @buttons = (0...@shapes.size).map do |i|
-        col = i % 3
-        row = i / 3
+        col = i % LEFT_PANEL_COLUMNS
+        row = i / LEFT_PANEL_COLUMNS
         Button.new(x: SPACING + col * (BUTTON_SIZE + SPACING), y: SPACING + row * (BUTTON_SIZE + SPACING), img: :button)
       end
     end
