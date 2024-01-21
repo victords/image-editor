@@ -1,26 +1,22 @@
-require "rmagick"
 require "minigl"
+require_relative "gui"
 
-class Window < MiniGL::GameWindow
+include MiniGL
+
+class Window < GameWindow
   def initialize
     super(800, 600, false)
+    Res.prefix = "#{File.expand_path(__FILE__).split("/")[0..-3].join("/")}/data"
+    Gui.initialize
+  end
 
-    image = Magick::Image.new(50, 50) do |options|
-      options.background_color = "transparent"
-      options.format = "PNG"
-    end
-    draw = Magick::Draw.new
-    draw.fill = "#ff0000"
-    draw.stroke = "black"
-    draw.stroke_width = 2
-    draw.circle(24.5, 24.5, 1, 24)
-    draw.draw(image)
-    @image = Gosu::Image.from_blob(50, 50, image.export_pixels_to_str(0, 0, 50, 50, "RGBA"))
+  def update
+    Gui.update
   end
 
   def draw
     clear(0xffffffff)
-    @image.draw(10, 10, 0)
+    Gui.draw
   end
 end
 
