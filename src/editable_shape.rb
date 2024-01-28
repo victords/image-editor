@@ -21,7 +21,7 @@ class EditableShape
   end
 
   def draw
-    @shape.draw(@x - @size * 0.5, @y - @size * 0.5, 0)
+    @shape.gosu_image.draw(@x - @size * 0.5, @y - @size * 0.5, 0)
   end
 
   private

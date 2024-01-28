@@ -23,6 +23,13 @@ class Gui
         end
       end
 
+      button_images = [
+        Shapes.rectangle(BUTTON_SIZE, BUTTON_SIZE, "#00000000", nil, 0),
+        Shapes.rectangle(BUTTON_SIZE, BUTTON_SIZE, "#00000019", nil, 0),
+        Shapes.rectangle(BUTTON_SIZE, BUTTON_SIZE, "#00000032", nil, 0),
+      ]
+      Res.instance_variable_get(:@global_imgs)[:button] = button_images.map(&:gosu_image)
+
       @buttons = (0...shape_types.size).map do |i|
         col = i % LEFT_PANEL_COLUMNS
         row = i / LEFT_PANEL_COLUMNS
@@ -43,7 +50,7 @@ class Gui
       G.window.draw_rect(0, 0, SPACING + LEFT_PANEL_COLUMNS * (BUTTON_SIZE + SPACING), WINDOW_HEIGHT, 0xffeeeeee, 1)
       @buttons.each_with_index do |b, i|
         b.draw(255, 1)
-        @shapes[i].draw(b.x + SHAPE_OFFSET, b.y + SHAPE_OFFSET, 1)
+        @shapes[i].gosu_image.draw(b.x + SHAPE_OFFSET, b.y + SHAPE_OFFSET, 1)
       end
       @active_shape&.draw
     end
