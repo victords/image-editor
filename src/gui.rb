@@ -1,4 +1,6 @@
 require_relative "shapes"
+require_relative "editable_shape"
+require_relative "constants"
 
 include MiniGL
 
@@ -11,30 +13,39 @@ class Gui
 
   class << self
     def initialize
-      @shapes = [
-        Shapes.rectangle(SHAPE_SIZE, SHAPE_SIZE),
-        Shapes.circle(SHAPE_SIZE),
-        Shapes.triangle_equi(SHAPE_SIZE),
-        Shapes.triangle_right(SHAPE_SIZE, SHAPE_SIZE)
-      ]
+      shape_types = %i[rectangle circle triangle_equi triangle_right]
+      @shapes = shape_types.map do |type|
+        case type
+        when :rectangle, :triangle_right
+          Shapes.send(type, SHAPE_SIZE, SHAPE_SIZE)
+        else
+          Shapes.send(type, SHAPE_SIZE)
+        end
+      end
 
-      @buttons = (0...@shapes.size).map do |i|
+      @buttons = (0...shape_types.size).map do |i|
         col = i % LEFT_PANEL_COLUMNS
         row = i / LEFT_PANEL_COLUMNS
-        Button.new(x: SPACING + col * (BUTTON_SIZE + SPACING), y: SPACING + row * (BUTTON_SIZE + SPACING), img: :button)
+        Button.new(x: SPACING + col * (BUTTON_SIZE + SPACING), y: SPACING + row * (BUTTON_SIZE + SPACING), img: :button) do
+          @active_shape = EditableShape.new(shape_types[i])
+        end
       end
     end
 
     def update
+      KB.update
       Mouse.update
       @buttons.each(&:update)
+      @active_shape&.update
     end
 
     def draw
+      G.window.draw_rect(0, 0, SPACING + LEFT_PANEL_COLUMNS * (BUTTON_SIZE + SPACING), WINDOW_HEIGHT, 0xffeeeeee, 1)
       @buttons.each_with_index do |b, i|
-        b.draw
-        @shapes[i].draw(b.x + SHAPE_OFFSET, b.y + SHAPE_OFFSET)
+        b.draw(255, 1)
+        @shapes[i].draw(b.x + SHAPE_OFFSET, b.y + SHAPE_OFFSET, 1)
       end
+      @active_shape&.draw
     end
   end
 end
